@@ -1,8 +1,16 @@
 package model.mail;
 
-import java.io.*;
-import java.nio.charset.Charset;
-import java.util.LinkedList;
-
 public class Person {
+    private String address;
+    public Person(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

@@ -1,26 +1,15 @@
 Subject: Demo 1
-
 Salut,
-
 Ceci est la demo 1
-
 ==
 Subject: Demo 2
-
 Salut,
-
 Ceci est la demo 2
-
 ==
 Subject: Demo 3
-
 Salut,
-
 Ceci est la demo 3
-
 ==
 Subject: Demo 4
-
 Salut,
-
 Ceci est la demo 4
