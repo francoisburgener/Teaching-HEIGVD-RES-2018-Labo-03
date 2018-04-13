@@ -39,7 +39,7 @@ public class Prank {
     public Mail generateMail(){
         Mail mail = new Mail();
         mail.setFrom(sender.getAddress());
-        String[] to = new String[RCPT.size()];
+        String[] to = new String[2];
         int i = 0;
         for(Person p : RCPT){
             to[i] = p.getAddress();
@@ -47,8 +47,10 @@ public class Prank {
         }
         mail.setTo(to);
         int index = message.indexOf("\r\n");
-        mail.setSubject(message.substring(0,index));
-        mail.setBody(message.substring(index+1));
+        String subject = message.substring(0,index);
+        String body = message.substring(index+1);
+        mail.setSubject(subject);
+        mail.setBody(body);
 
         return mail;
     }

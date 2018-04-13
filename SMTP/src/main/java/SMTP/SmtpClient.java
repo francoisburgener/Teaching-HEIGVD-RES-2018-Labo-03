@@ -36,7 +36,7 @@ public class SmtpClient implements ISmtpClient {
         line = reader.readLine();
 
         if(line.startsWith("250")){
-            while(!line.startsWith("250")){
+            while(!line.startsWith("250-")){
                 line = reader.readLine();
             }
 
@@ -64,7 +64,7 @@ public class SmtpClient implements ISmtpClient {
             writer.print(",  " + mail.getTo()[i]);
         }
         writer.print("\r\n");
-        writer.println("Subject: " + mail.getSubject());
+        writer.println(mail.getSubject());
         writer.println(mail.getBody());
         writer.println(".");
         writer.flush();
