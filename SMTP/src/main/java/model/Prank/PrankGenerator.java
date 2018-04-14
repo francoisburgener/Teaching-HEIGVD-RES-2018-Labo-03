@@ -14,6 +14,12 @@ public class PrankGenerator {
 
     IConfigurationManager configurationManager;
     ISmtpClient smtpClient;
+
+    /**
+     * Constructeur of PrankGenerator
+     * @param configurationManager
+     * @throws IOException
+     */
     public PrankGenerator(IConfigurationManager configurationManager) throws IOException {
         this.configurationManager = configurationManager;
         String serverAdress  = configurationManager.getStmpServerAdress();
@@ -21,6 +27,12 @@ public class PrankGenerator {
         smtpClient = new SmtpClient(serverAdress,serverPort);
     }
 
+    /**
+     * Methode who create all groups
+     * @param victims list of victims to put in a group
+     * @param numberOfGroups number of group to create
+     * @return list of group
+     */
     LinkedList<Group> createGroups(LinkedList<Person> victims, int numberOfGroups){
         LinkedList<Group> groups = new LinkedList<Group>();
 
@@ -35,33 +47,35 @@ public class PrankGenerator {
         return groups;
     }
 
+    /**
+     * Method to create prank
+     * @return return list of pranks
+     */
     public LinkedList<Prank> createPranks(){
         LinkedList<Prank> pranks = new LinkedList<Prank>();
         LinkedList<Person> victims = configurationManager.getVictims();
         LinkedList<String> messages = configurationManager.getMessages();
         int numberOfGroups = configurationManager.getNumberOfGroups();
-
         LinkedList<Group> groups = createGroups(victims,numberOfGroups);
 
         int cnt = 0;
         for(Group group : groups){
-            Prank prank = new Prank();
-
             LinkedList<Person> groupMembers = group.getGroup();
             Person sender = groupMembers.removeFirst();
-            prank.setSender(sender);
-            prank.setRCPT(groupMembers);
-            prank.setMessage(messages.get(cnt));
-            pranks.add(prank);
+            pranks.add(new Prank(sender,groupMembers,messages.get(cnt)));
             cnt++;
         }
         return pranks;
     }
 
+    /**
+     * Method to send a mail
+     * @throws IOException
+     */
     public void send() throws IOException {
         LinkedList<Prank> pranks = createPranks();
         for(Prank prank : pranks){
-            smtpClient.sendMail(prank.generateMail());
+            smtpClient.sendMail(prank.createMail());
         }
     }
 

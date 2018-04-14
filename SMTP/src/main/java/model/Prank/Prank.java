@@ -9,50 +9,24 @@ import java.util.stream.Collectors;
 
 public class Prank {
     private Person sender;
-    private LinkedList<Person> RCPT = new LinkedList<Person>();
+    private LinkedList<Person> RCPT;
     private String message;
 
-    public Person getSender() {
-        return sender;
-    }
-
-    public void setSender(Person sender) {
+    public Prank(Person sender, LinkedList<Person> RCPT, String message){
         this.sender = sender;
-    }
-
-    public LinkedList<Person> getRCPT() {
-        return RCPT;
-    }
-
-    public void setRCPT(LinkedList<Person> RCPT) {
         this.RCPT = RCPT;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
         this.message = message;
     }
 
-    public Mail generateMail(){
-        Mail mail = new Mail();
-        mail.setFrom(sender.getAddress());
-        String[] to = new String[2];
-        int i = 0;
+    public Mail createMail(){
+        LinkedList<String> to = new LinkedList<String>();
         for(Person p : RCPT){
-            to[i] = p.getAddress();
-            ++i;
+            to.add(p.getAddress());
         }
-        mail.setTo(to);
         int index = message.indexOf("\r\n");
         String subject = message.substring(0,index);
         String body = message.substring(index+1);
-        mail.setSubject(subject);
-        mail.setBody(body);
-
-        return mail;
+        return new Mail(sender.getAddress(),to,body,subject);
     }
 
 }

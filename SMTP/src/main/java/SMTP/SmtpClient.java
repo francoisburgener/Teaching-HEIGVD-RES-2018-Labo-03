@@ -1,9 +1,11 @@
 package SMTP;
 
 import model.mail.Mail;
+import model.mail.Person;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.LinkedList;
 
 public class SmtpClient implements ISmtpClient {
 
@@ -30,13 +32,14 @@ public class SmtpClient implements ISmtpClient {
     }
     public void sendMail(Mail mail) throws IOException {
         connect();
+        LinkedList<String> receivers = mail.getTo();
         String line = reader.readLine();
         writer.println("EHLO test");
         writer.flush();
         line = reader.readLine();
 
         if(line.startsWith("250")){
-            while(!line.startsWith("250-")){
+            while(!line.startsWith("250")){
                 line = reader.readLine();
             }
 
@@ -49,7 +52,7 @@ public class SmtpClient implements ISmtpClient {
         line = reader.readLine();
 
 
-        for(String to : mail.getTo()){
+        for(String to : receivers){
             writer.println("RCPT TO: " + to);
             writer.flush();
             line = reader.readLine();
@@ -59,9 +62,9 @@ public class SmtpClient implements ISmtpClient {
         writer.flush();
         line = reader.readLine();
         writer.println("From: " + mail.getFrom());
-        writer.print("To: " + mail.getTo()[0]);
-        for(int i = 1; i < mail.getTo().length;++i){
-            writer.print(",  " + mail.getTo()[i]);
+        writer.print("To: " + receivers.removeFirst());
+        for(String to : receivers){
+            writer.print(",  " + to);
         }
         writer.print("\r\n");
         writer.println(mail.getSubject());
