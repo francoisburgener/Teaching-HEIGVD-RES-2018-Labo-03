@@ -30,8 +30,17 @@ public class SmtpClient implements ISmtpClient {
             e.printStackTrace();
         }
     }
+
+    private void disconnect() throws IOException {
+        writer.println("QUIT");
+        writer.flush();
+        reader.close();
+        writer.close();
+        socket.close();
+    }
     public void sendMail(Mail mail) throws IOException {
         connect();
+
         LinkedList<String> receivers = mail.getTo();
         String line = reader.readLine();
         writer.println("EHLO test");
@@ -74,15 +83,6 @@ public class SmtpClient implements ISmtpClient {
 
         line = reader.readLine();
 
-        writer.println("QUIT");
-        writer.flush();
-        reader.close();
-        writer.close();
-        socket.close();
-
-
-
-
-
+        disconnect();
     }
 }
