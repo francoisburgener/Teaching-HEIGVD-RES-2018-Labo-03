@@ -48,7 +48,11 @@ public class PrankGenerator {
         int i = 0;
 
         for(Person p : victims){
-            groups[i++%numberOfGroups].addMember(p);
+            if(groups[i] == null){
+                groups[i] = new Group();
+            }
+            groups[i].addMember(p);
+            i = (i+1) % numberOfGroups;
         }
 
         return groups;
