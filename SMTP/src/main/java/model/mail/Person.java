@@ -1,14 +1,15 @@
 package model.mail;
 
 /**
- *Class representing a person and who stores his email address
+ * Class that represents a person by storing his email address
+ * @author Burgener François, Curchod Bryan
  */
 public class Person {
     private String address;
 
     /**
      * Constructor of a Person
-     * @param address
+     * @param address initial address
      */
     public Person(String address) {
         this.address = address;
@@ -16,7 +17,7 @@ public class Person {
 
     /**
      * Get the address of a person
-     * @return
+     * @return email address of the person
      */
     public String getAddress() {
         return address;

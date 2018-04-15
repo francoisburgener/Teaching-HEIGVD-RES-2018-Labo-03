@@ -3,8 +3,9 @@ package model.mail;
 import java.util.LinkedList;
 
 /**
- *Class representing an email and storing the address of the sender,
- *recipient and the subject and the body of the message
+ * Class representing an email. It stores the address of the sender and receiver(s),
+ * the recipient, the subject and the body of the message
+ * @author Burgener François, Curchod Bryan
  */
 public class Mail {
     private String from;
@@ -12,6 +13,13 @@ public class Mail {
     private String body;
     private String subject;
 
+    /**
+     * constructor that set all attribute
+     * @param from sender
+     * @param to receiver(s)
+     * @param body content of the mail
+     * @param subject subject of the mail
+     */
     public Mail(String from, LinkedList<String> to, String body, String subject) {
         this.from = from;
         this.to = to;

@@ -7,6 +7,10 @@ import java.io.*;
 import java.net.Socket;
 import java.util.LinkedList;
 
+/**
+ * Manage the communication with a SMTP server in order to send mails
+ * @author Burgener François, Curchod Bryan
+ */
 public class SmtpClient implements ISmtpClient {
 
     private String serverAdress;
@@ -16,11 +20,19 @@ public class SmtpClient implements ISmtpClient {
     private PrintWriter writer;
     private BufferedReader reader;
 
+    /**
+     * Constructor of a client
+     * @param serverAdress SMTP server to use
+     * @param serverPort open port in the server
+     */
     public SmtpClient(String serverAdress, int serverPort){
         this.serverAdress = serverAdress;
         this.serverPort = serverPort;
     }
 
+    /**
+     * Create the socket and the reader/writer.
+     */
     private void connect(){
         try {
             socket = new Socket(serverAdress,serverPort);
@@ -31,6 +43,10 @@ public class SmtpClient implements ISmtpClient {
         }
     }
 
+    /**
+     * End the communication with the SMTP server, and close the I/O streams.
+      * @throws IOException
+     */
     private void disconnect() throws IOException {
         writer.println("QUIT");
         writer.flush();
@@ -38,6 +54,12 @@ public class SmtpClient implements ISmtpClient {
         writer.close();
         socket.close();
     }
+
+    /**
+     * manage the "discussion" with the server to forge a mail.
+     * @param mail mail to send
+     * @throws IOException
+     */
     public void sendMail(Mail mail) throws IOException {
         connect();
 

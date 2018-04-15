@@ -7,27 +7,38 @@ import java.util.LinkedList;
 import java.util.Properties;
 
 /**
- * Class representing the configuration of the of the server
+ * Class representing the configuration of the prank generator.
+ * Gather the information about the SMTP server address and port, the number of
+ * groups to form, and the location of the files for the list of the victims and
+ * the messages to send.
+ * @author Burgener François, Curchod Bryan
  */
 public class ConfigurationManager implements IConfigurationManager {
     private String stmpServerAdress;
     private int smtpServerPort;
-    private final LinkedList<Person> victims;
-    private final LinkedList<String> messages;
+    private LinkedList<Person> victims;
+    private LinkedList<String> messages;
     private int numberOfGroups;
 
     /**
-     * Constructeur of the class
+     * Default constructor, take a file by default
      * @throws IOException
      */
-    public ConfigurationManager() throws IOException {
-        victims = loadAddressFromFile("./config/victims.txt");
-        messages = loadMessageFromFile("./config/message.txt");
+    /*public ConfigurationManager() throws IOException {
         loadProperties("./config/config.properties");
+    }*/
+
+    /**
+     * Construct an instance based on a customized configuration file
+     * @param file
+     * @throws IOException
+     */
+    public ConfigurationManager(String file) throws  IOException{
+        loadProperties(file);
     }
 
     /**
-     * Get the address of the smtp server on file config.properties
+     * Get the address of the smtp server
      * @return the address of the smtp server
      */
     @Override
@@ -36,7 +47,7 @@ public class ConfigurationManager implements IConfigurationManager {
     }
 
     /**
-     * Get the port of the smtp server on file config.properties
+     * Get the port of the smtp server
      * @return the port of the smtp server
      */
     @Override
@@ -53,9 +64,12 @@ public class ConfigurationManager implements IConfigurationManager {
         return numberOfGroups;
     }
 
+    public String getVictimsFile() {
+        return null;
+    }
     /**
-     * Get the list of victims ( person)
-     * @return the list of victims
+     * Get the list of victims (email addresses to use)
+     * @return list of email addresses to use for the prank
      */
     @Override
     public LinkedList<Person> getVictims() {
@@ -64,7 +78,7 @@ public class ConfigurationManager implements IConfigurationManager {
 
     /**
      * Get the list of message
-     * @return
+     * @return list of messages to use for the prank
      */
     @Override
     public LinkedList<String> getMessages() {
@@ -72,8 +86,8 @@ public class ConfigurationManager implements IConfigurationManager {
     }
 
     /**
-     * Load the properties
-     * @param fileName  path of the file config.properties
+     * Load the properties from a configuration file
+     * @param fileName  path of the configuration file
      * @throws IOException
      */
     private void loadProperties(String fileName) throws IOException {
@@ -84,12 +98,14 @@ public class ConfigurationManager implements IConfigurationManager {
         stmpServerAdress = properties.getProperty("smtpServerAdress");
         smtpServerPort = Integer.parseInt(properties.getProperty("smtpServerPort"));
         numberOfGroups = Integer.parseInt(properties.getProperty("numberOfGroups"));
+        victims = loadAddressFromFile(properties.getProperty("victimListeFile"));
+        messages = loadMessageFromFile(properties.getProperty("messagesListeFile"));
     }
 
     /**
      * Load addresses of victims from file
-     * @param fileName path of the file victims.txt
-     * @return
+     * @param fileName path to the file containing a list of email
+     * @return the list extracted from the file
      * @throws IOException
      */
     private LinkedList<Person> loadAddressFromFile(String fileName) throws IOException {
@@ -105,8 +121,8 @@ public class ConfigurationManager implements IConfigurationManager {
 
     /**
      * Load messages from file
-     * @param fileName path of the file message.txt
-     * @return
+     * @param fileName path to the file containing a list of messages
+     * @return a list of usable messages
      * @throws IOException
      */
     private LinkedList<String> loadMessageFromFile(String fileName) throws IOException {

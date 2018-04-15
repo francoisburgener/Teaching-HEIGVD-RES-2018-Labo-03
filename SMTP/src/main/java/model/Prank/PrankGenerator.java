@@ -2,46 +2,53 @@ package model.Prank;
 
 import SMTP.ISmtpClient;
 import SMTP.SmtpClient;
-import config.ConfigurationManager;
 import config.IConfigurationManager;
 import model.mail.Group;
 import model.mail.Person;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Random;
 
+/**
+ * This class, gather information from the config in order
+ * to forge emails and send them.
+ * @author Burgener François, Curchod Bryan
+ */
 public class PrankGenerator {
 
-    IConfigurationManager configurationManager;
+    private final static int MAX_GROUP_SIZE = 3;
+    IConfigurationManager config;
     ISmtpClient smtpClient;
 
     /**
-     * Constructeur of PrankGenerator
-     * @param configurationManager
+     * Constructeur of PrankGenerator, set the configManager, and create the SMTP client
+     * @param cm
      * @throws IOException
      */
-    public PrankGenerator(IConfigurationManager configurationManager) throws IOException {
-        this.configurationManager = configurationManager;
-        String serverAdress  = configurationManager.getStmpServerAdress();
-        int serverPort = configurationManager.getSmtpServerPort();
-        smtpClient = new SmtpClient(serverAdress,serverPort);
+    public PrankGenerator(IConfigurationManager cm) throws IOException {
+        this.config = cm;
+        smtpClient = new SmtpClient(config.getStmpServerAdress(), config.getSmtpServerPort());
     }
 
     /**
-     * Methode who create all groups
+     * Use a list of person to create a certain number of groups
      * @param victims list of victims to put in a group
      * @param numberOfGroups number of group to create
      * @return list of group
      */
-    LinkedList<Group> createGroups(LinkedList<Person> victims, int numberOfGroups){
-        LinkedList<Group> groups = new LinkedList<Group>();
+    Group[] createGroups(LinkedList<Person> victims, int numberOfGroups){
 
-        for(int i = 0; i < numberOfGroups; ++i){
-            Group group = new Group();
-            for(int j = 0; j < numberOfGroups; ++j){
-                group.addMember(victims.removeFirst());
-            }
-            groups.add(group);
+
+        // we check if we have enough person to create the wanted amount of groups
+        if(victims.size()/MAX_GROUP_SIZE < numberOfGroups) {
+            numberOfGroups = victims.size()/MAX_GROUP_SIZE;
+        }
+        Group[] groups = new Group[numberOfGroups];
+        int i = 0;
+
+        for(Person p : victims){
+            groups[i++%numberOfGroups].addMember(p);
         }
 
         return groups;
@@ -53,16 +60,17 @@ public class PrankGenerator {
      */
     public LinkedList<Prank> createPranks(){
         LinkedList<Prank> pranks = new LinkedList<Prank>();
-        LinkedList<Person> victims = configurationManager.getVictims();
-        LinkedList<String> messages = configurationManager.getMessages();
-        int numberOfGroups = configurationManager.getNumberOfGroups();
-        LinkedList<Group> groups = createGroups(victims,numberOfGroups);
+        LinkedList<Person> victims = config.getVictims();
+        LinkedList<String> messages = config.getMessages();
+        int numberOfGroups = config.getNumberOfGroups();
+        Group[] groups = createGroups(victims,numberOfGroups);
 
         int cnt = 0;
+        Random rdm = new Random();
         for(Group group : groups){
             LinkedList<Person> groupMembers = group.getGroup();
             Person sender = groupMembers.removeFirst();
-            pranks.add(new Prank(sender,groupMembers,messages.get(cnt)));
+            pranks.add(new Prank(sender,groupMembers,messages.get(rdm.nextInt(messages.size()))));
             cnt++;
         }
         return pranks;

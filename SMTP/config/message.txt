@@ -1,19 +1,34 @@
-Subject: Demo 1
+Subject: Soda
 
-Salut,
-Ceci est la demo 1
+I used to work for a soft drink can crusher.
+It was Soda Pressing
 @@
-Subject: Demo 2
+Subject: Switzerland
 
-Salut,
-Ceci est la demo 2
+What's the advantage of living in Switzerland ?
+Well, the flag is a big plus.
 @@
-Subject: Demo 3
+Subject: Kidnapping
 
-Salut,
-Ceci est la demo 3
+Did you hear about the kidnapping at school ?
+It's ok, he woke up.
 @@
-Subject: Demo 4
+Subject: Lion
 
-Salut,
-Ceci est la demo 4
+I have the heat of a lion.
+And a lifetime ban from the San-Diego zoo.
+@@
+Subjet: Restaurant
+
+Did you hear about the new restaurant on the moon ?
+The food is great, but there's just no atmosphere.
+@@
+Subject: Will Smith
+
+How do you find Will Smith in the snow ?
+You look for the fresh prints.
+@@
+Subject: Orchestra
+
+How do you call a group of killer whales playing instruments ?
+an Orca-stra.

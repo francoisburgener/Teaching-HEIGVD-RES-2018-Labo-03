@@ -3,14 +3,15 @@ package model.mail;
 import java.util.LinkedList;
 
 /**
- *Class representing a group of people
+ * Class representing a group of people
+ * @author Burgener François, Curchod Bryan
  */
 public class Group {
     //Group of person
     private LinkedList<Person> group = new LinkedList<Person>();
 
     /**
-     *Add a member to the group
+     * Add a member to the group
      * @param person member to add to the group
      */
     public void addMember(Person person){
