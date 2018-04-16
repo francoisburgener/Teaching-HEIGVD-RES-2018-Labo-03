@@ -1,64 +1,68 @@
-# Teaching-HEIGVD-RES-2018-Labo-SMTP
+# RES-2018-Labo-SMTP
 
-## Objectives
+## Description
 
-In this lab, you will develop a client application (TCP) in Java. This client application will use the Socket API to communicate with a SMTP server. The code that you write will include a **partial implementation of the SMTP protocol**. These are the objectives of the lab:
+In this lab, we developped a client application (TCP) in Java that use a the socket API to comminucate with a SMTP server. In order to do the right thing we watched the teacher's webcast and followed the instructions. Our lab consist of  creating a "prank generator". The user will define a list of emails and messages that the client will use to forge mails and send them to a chosen SMTP server.
 
-* Make practical experiments to become familiar with the **SMTP protocol**. After the lab, you should be able to use a command line tool to **communicate with a SMTP server**. You should be able to send well-formed messages to the server, in order to send emails to the address of your choice.
+## Instructions
 
-* Understand the notions of **test double** and **mock server**, which are useful when developing and testing a client-server application. During the lab, you will setup and use such a **mock server**.
+### Setting up the prank campaign
 
-* Understand what it means to **implement the SMTP protocol** and be able to send e-mail messages, by working directly on top of the Socket API (i.e. you are not allowed to use a SMTP library).
+_"A great prank campaign implies a great preparation."_ - Ben Parker, probably
 
-* **See how easy it is to send forged e-mails**, which appear to be sent by certain people but in reality are issued by malicious users.
+In order to lead this campaign, you have to prepare the SMTP server, the list of the poor lamb that will be pranked, and a list of ~~message~~ prank that will be randomly taken to be sent. In the "SMTP/config" folder you will find the configuration file cleverly named ___config.properties___. It's in this file that we specify the IP address and port of the SMTP server to use, the number of group that we have to create with the list of email. We also have to give the locations of the files containning the victims and messages list, files that you can find in the same folder.
 
-* **Design a simple object-oriented model** to implement the functional requirements described in the next paragraph.
+For the victims list, you simply need to give the mail address, one per line, no big deal. For the messages list, you need a bit more skills, but don't worry we're here to explain this ;). First of all, you have to write down the subject of the mail. In order to do so, juste write "__Subject : XXX__" and replace the __XXX__ by a subject that please your heart. THEN you can _let it go (♪♫)_, and write the content of your prank. Once you're satisfied with your first prank, and your imagination leads you to more wonderful jokes, simply write _a line_ that consists of "__@@__" (a double "at") and repeat the prank writing process. 
 
+Congrats! you set up the prank campaign !
 
+### "But what if I want to test it ?"
 
+We planned it, buddy! In the "Docker" folder, you'll find the Dockerfile that will run a MockMock server. Here's the content of this file :
 
-## Functional requirements
+```Dockerfile
+FROM java:8
 
-Your mission is to develop a client application that automatically plays pranks on a list of victims:
+ADD ["https://github.com/tweakers-dev/MockMock/blob/master/release/MockMock.jar?raw=true", "/mail/MockMock.jar"]
 
-* The user should be able to **define a list of victims** (concretely, you should be able to create a file containing a list of e-mail addresses).
+CMD ["java", "-jar", "/mail/MockMock.jar"]
+```
 
-* The user should be able to **define how many groups of victims should be formed** in a given campaign. In every group of victims, there should be 1 sender and at least 2 recipients (i.e. the minimum size for a group is 3).
+To use it, open your Docker Terminal (take note of the IP address, you'll have to use it) and get in the Dockerfile location. Then you have to build the image of the server with this command (you don't have to use the same name) :
 
-* The user should be able to **define a list of e-mail messages**. When a prank is played on a group of victims, then one of these messages should be selected. **The mail should be sent to all group recipients, from the address of the group sender**. In other words, the recipient victims should be lead to believe that the sender victim has sent them.
+```cmd
+docker build -t NameOfTheImage
+```
 
+You can check if it was correctly created by typing the following command :
 
-## Example
+```cmd
+docker images
+```
 
-Consider that your program generates a group G1. The group sender is Bob. The group recipients are Alice, Claire and Peter. When the prank is played on group G1, then your program should pick one of the fake messages. It should communicate with a SMTP server, so that Alice, Claire and Peter receive an e-mail, which appears to be sent by Bob.
+Finally, to run your server, use this command : 
 
+```cmd
+docker run -p 8282:8282 -p 25:25 NameOfTheImage
+```
 
-## Deliverables
+the parameter "__-p x:y__" __bind the local port x to the server port y__. In our case, the port 8282 is for the HTTP server (you'll be able to see the mail sent through a web interface), and the port 25 is used for the SMTP server. "_I don't like theses numbers can i change them?_" - YES YOU CAN ! __but only the ones before the colons__ (":", the number __x__).
 
-You will deliver the results of your lab in a GitHub repository. 
+___A little reminder___ : don't forget to change the server address and port in config.properties. Use the ip given at the start of the docker terminal (i told you it was important), and the local port you binded on the server port 25.
 
-Your repository should contain both the source code of your Java project and your report. Your report should be a single `README.md` file, located at the root of your repository. The images should be placed in a `figures` directory.
+Last but not least : give yourself a little treat (a cake, a cookie, a camomile tea, ...), you take the prank seriously and want to test your configuration, you deserved this!
 
-Your report MUST include the following sections:
+### Prank time baby !
 
-* **A brief description of your project**: if people exploring GitHub find your repo, without a prior knowledge of the RES course, they should be able to understand what your repo is all about and whether they should look at it more closely.
+NOW it's serious business! Prank campaign, ready ✓. SMTP server, checked ✓. 
 
-* **Instructions for setting up a mock SMTP server (with Docker)**. The user who wants to experiment with your tool but does not really want to send pranks immediately should be able to use a mock SMTP server. For people who are not familiar with this concept, explain it to them in simple terms. Explain which mock server you have used and how you have set it up.
+You just have to send those bombs now! In order to do so, open a terminal et go to the project folder. Then execute the jar file. If you don't give any argument to the file it will use the default configuration file (/config/config.properties). Anyway you still can use another properties file by giving the path.
 
-* **Clear and simple instructions for configuring your tool and running a prank campaign**. If you do a good job, an external user should be able to clone your repo, edit a couple of files and send a batch of e-mails in less than 10 minutes.
+And THERE YOU GO BABY, your prank campaign is complete, you can be proud of yourself!
 
-In addition, your report SHOULD include (i.e. you will not have penalties if you don't provide the info, but if you want to add this project to your portfolio, it is worth doing it):
+## Implementation
 
-* **A concise description of your implementation**: document the key aspects of your code. It is probably a good idea to start with a class diagram. Decide which classes you want to show (focus on the important ones) and describe their responsibilities in text. It is also certainly a good idea to include examples of dialogues between your client and a SMTP server (maybe you also want to include some screenshots here).
+"oh thank you my lords, but how did you build this ingenious mechanism?" - Well if you insist, I'll show you.
 
-      
-## Evaluation
-
-* See CyberLearn. Beware of the dates.
-
-
-
-
-
-
+___A concise description of your implementation: document the key aspects of your code. It is probably a good idea to start with a class diagram. Decide which classes you want to show (focus on the important ones) and describe their responsibilities in text. It is also certainly a good idea to include examples of dialogues between your client and a SMTP server (maybe you also want to include some screenshots here).___
 

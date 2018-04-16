@@ -6,3 +6,11 @@ SMTP/\.idea/
 \.idea/
 
 *.class
+
+SMTP/classes/
+
+*.jar
+
+SMTP/target/
+
+SMTP/src/main/java/META-INF/
