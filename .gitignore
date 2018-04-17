@@ -9,8 +9,6 @@ SMTP/\.idea/
 
 SMTP/classes/
 
-*.jar
-
 SMTP/target/
 
 SMTP/src/main/java/META-INF/
