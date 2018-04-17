@@ -77,7 +77,7 @@ And THERE YOU GO BABY, your prank campaign is complete, you can be proud of your
 
 "_Thank you my lords, but how did your ingenious mind build such a smart mechanism?_" - Well if you insist, I'll show you.
 
-![res-labo3-smtp-uml](.\figure\res-labo3-smtp-uml.png)
+![res-labo3-smtp-uml](/figure/res-labo3-smtp-uml.png)
 
 ### Configuration manager
 
@@ -87,7 +87,7 @@ The first insteresting class is the ConfigurationManager. This class use the pat
 
 The second class that should get your interest is the SmtpClient. It's with this class that we comminucate with the SMTP server, the method `sendMail()` will connect the client to the server, and forge a mail and send it. here's an example of a communication between a client and a server :
 
-![SMTP-schem](.\figure\SMTP-schem.png)
+![SMTP-schem](/figure/SMTP-schem.png)
 
 ### prankGenerator
 
