@@ -86,6 +86,7 @@ public class PrankGenerator {
      */
     public void send() throws IOException {
         LinkedList<Prank> pranks = createPranks();
+        System.out.println("Sending pranks ...");
         for(Prank prank : pranks){
             smtpClient.sendMail(prank.createMail());
         }

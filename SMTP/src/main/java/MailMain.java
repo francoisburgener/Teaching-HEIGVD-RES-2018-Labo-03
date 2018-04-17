@@ -21,7 +21,7 @@ public class MailMain {
                 // launch the prank campaign
                 try {
                     new PrankGenerator(new ConfigurationManager(filename)).send();
-                    System.out.println("They have been pranked ! ;D");
+                    System.out.println("They have been pranked ! ;)");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

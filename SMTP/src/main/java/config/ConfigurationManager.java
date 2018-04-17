@@ -21,14 +21,6 @@ public class ConfigurationManager implements IConfigurationManager {
     private int numberOfGroups;
 
     /**
-     * Default constructor, take a file by default
-     * @throws IOException
-     */
-    /*public ConfigurationManager() throws IOException {
-        loadProperties("./config/config.properties");
-    }*/
-
-    /**
      * Construct an instance based on a customized configuration file
      * @param file
      * @throws IOException
@@ -99,7 +91,9 @@ public class ConfigurationManager implements IConfigurationManager {
         smtpServerPort = Integer.parseInt(properties.getProperty("smtpServerPort"));
         numberOfGroups = Integer.parseInt(properties.getProperty("numberOfGroups"));
         victims = loadAddressFromFile(properties.getProperty("victimListeFile"));
+        System.out.println("Victim list OK");
         messages = loadMessageFromFile(properties.getProperty("messagesListeFile"));
+        System.out.println("Message list OK");
     }
 
     /**
@@ -110,13 +104,20 @@ public class ConfigurationManager implements IConfigurationManager {
      */
     private LinkedList<Person> loadAddressFromFile(String fileName) throws IOException {
         LinkedList<Person> people;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
+
         people = new LinkedList<Person>();
         String line;
         while((line = reader.readLine()) != null){
             people.add(new Person(line));
         }
         return people;
+        } catch (FileNotFoundException e) {
+            System.out.println("Couldn't find the victim file");
+            throw e;
+        }
     }
 
     /**
@@ -127,7 +128,10 @@ public class ConfigurationManager implements IConfigurationManager {
      */
     private LinkedList<String> loadMessageFromFile(String fileName) throws IOException {
         LinkedList<String> messages;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
+
         messages = new LinkedList<String>();
         String line;
         while((line = reader.readLine()) != null){
@@ -138,5 +142,10 @@ public class ConfigurationManager implements IConfigurationManager {
             messages.add(message);
         }
         return messages;
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Couldn't find the message file :(");
+            throw e;
+        }
     }
 }

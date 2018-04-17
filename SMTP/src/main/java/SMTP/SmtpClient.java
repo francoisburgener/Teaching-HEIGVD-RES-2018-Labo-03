@@ -65,7 +65,7 @@ public class SmtpClient implements ISmtpClient {
 
         LinkedList<String> receivers = mail.getTo();
         String line = reader.readLine();
-        writer.println("EHLO test");
+        writer.println("EHLO OriginalPrankster");
         writer.flush();
         line = reader.readLine();
 
